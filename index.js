@@ -37,6 +37,21 @@ async function run() {
             const result = await allProductsCollection.find().toArray()
             res.send(result)
         })
+
+        app.get('/brand-category', async (req, res) => {
+            const result = await allProductsCollection.aggregate([
+                {
+                    $group: { _id: null, brands: { $addToSet: "$brand" }, category: { $addToSet: "$category" } }
+                },
+                {
+                    $project: { _id: 0, brands: 1, category: 1 }
+                },
+
+            ]).toArray()
+            res.send(result)
+        })
+
+
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
