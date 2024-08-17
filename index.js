@@ -34,6 +34,10 @@ async function run() {
 
 
         app.get('/all-products', async (req, res) => {
+
+            const query = req.query
+            console.log(query)
+            
             const result = await allProductsCollection.find().toArray()
             res.send(result)
         })
@@ -45,7 +49,7 @@ async function run() {
                 },
                 {
                     $project: { _id: 0, brands: 1, category: 1 }
-                },
+                }
 
             ]).toArray()
             res.send(result)
