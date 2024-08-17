@@ -57,13 +57,16 @@ async function run() {
                 {
                     $match: {
                         ...(brand === " " ? {} : { brand: brand }),
-                        ...(category === " " ? {} : { category: category })
+                        ...(category === " " ? {} : { category: category }),
+
+                        ...(minPrice && maxPrice ? { price: { $gte: minPrice, $lte: maxPrice } } : {})
+
                     },
 
                 },
                 {
                     $sort: {
-                        ...(highLowPrice === 'highLow' ? { price: -1 } : { price: 1 } )
+                        ...(highLowPrice === 'highLow' ? { price: -1 } : { price: 1 })
                     }
                 }
             ]).toArray()
