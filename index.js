@@ -50,7 +50,7 @@ async function run() {
 
             // const filter = 
 
-            console.log(brand, category, minPrice, maxPrice, highLowPrice, newest)
+            console.log(newest)
 
             // const result = await allProductsCollection.find(filter).toArray()
             const result = await allProductsCollection.aggregate([
@@ -66,9 +66,10 @@ async function run() {
                 },
                 {
                     $sort: {
-                        ...(highLowPrice === 'highLow' ? { price: -1 } : { price: 1 })
+                        ...(highLowPrice === 'highLow' ? { price: -1 } : { price: 1 }),
+                        ...(newest === "true" ? { creationDate: -1 } : { creationDate: 1 })
                     }
-                }
+                },
             ]).toArray()
 
 
