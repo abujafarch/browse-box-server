@@ -44,9 +44,13 @@ async function run() {
             const highLowPrice = query.highLowPrice === 'highLow' ? 1 : 0
             const newest = query.newest
 
+            const filter = {
+                $or: [{ brand: brand }, { category: category }, { price: { $gte: minPrice, $lte: maxPrice } }]
+            }
+
             console.log(brand, category, minPrice, maxPrice, highLowPrice, newest)
 
-            const result = await allProductsCollection.find().toArray()
+            const result = await allProductsCollection.find(filter).toArray()
             res.send(result)
         })
 
