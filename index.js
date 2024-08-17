@@ -44,15 +44,7 @@ async function run() {
             const highLowPrice = query.highLowPrice
             const newest = query.newest
 
-            // const filter = {
-            //     $or: [{ brand: brand }, { category: category }, { price: { $gte: minPrice, $lte: maxPrice } }]
-            // }
-
-            // const filter = 
-
-            console.log(newest)
-
-            // const result = await allProductsCollection.find(filter).toArray()
+            
             const result = await allProductsCollection.aggregate([
                 {
                     $match: {
