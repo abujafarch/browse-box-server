@@ -37,7 +37,15 @@ async function run() {
 
             const query = req.query
             console.log(query)
-            
+            const brand = query.brandName
+            const category = query.categoryName
+            const minPrice = parseInt(query.minPrice)
+            const maxPrice = parseInt(query.maxPrice)
+            const highLowPrice = query.highLowPrice === 'highLow' ? 1 : 0
+            const newest = query.newest
+
+            console.log(brand, category, minPrice, maxPrice, highLowPrice, newest)
+
             const result = await allProductsCollection.find().toArray()
             res.send(result)
         })
