@@ -41,16 +41,34 @@ async function run() {
             const category = query.categoryName
             const minPrice = parseInt(query.minPrice)
             const maxPrice = parseInt(query.maxPrice)
-            const highLowPrice = query.highLowPrice === 'highLow' ? 1 : 0
+            const highLowPrice = query.highLowPrice
             const newest = query.newest
 
-            const filter = {
-                $or: [{ brand: brand }, { category: category }, { price: { $gte: minPrice, $lte: maxPrice } }]
-            }
+            // const filter = {
+            //     $or: [{ brand: brand }, { category: category }, { price: { $gte: minPrice, $lte: maxPrice } }]
+            // }
+
+            // const filter = 
 
             console.log(brand, category, minPrice, maxPrice, highLowPrice, newest)
 
-            const result = await allProductsCollection.find(filter).toArray()
+            // const result = await allProductsCollection.find(filter).toArray()
+            const result = await allProductsCollection.aggregate([
+                {
+                    $match: {
+                        ...(brand === " " ? {} : { brand: brand }),
+                        ...(category === " " ? {} : { category: category })
+                    },
+
+                },
+                {
+                    $sort: {
+                        ...(highLowPrice === 'highLow' ? { price: -1 } : { price: 1 } )
+                    }
+                }
+            ]).toArray()
+
+
             res.send(result)
         })
 
