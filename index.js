@@ -32,6 +32,16 @@ async function run() {
         const database = client.db('browseBox')
         const allProductsCollection = database.collection('allProducts')
 
+        app.get('/searched-products', async (req, res) => {
+            const query = req.query.search
+            console.log(query)
+            const filter = {
+                productName: { $regex: query, $options: "i" }
+            }
+            const result = await allProductsCollection.find(filter).toArray()
+            res.send(result)
+        })
+
 
         app.get('/all-products', async (req, res) => {
 
@@ -44,7 +54,7 @@ async function run() {
             const highLowPrice = query.highLowPrice
             const newest = query.newest
 
-            
+
             const result = await allProductsCollection.aggregate([
                 {
                     $match: {
